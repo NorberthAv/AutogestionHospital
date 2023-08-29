@@ -110,7 +110,7 @@ class Cita extends Model
 
         $especialidad = DB::table('especialidad')->select('*')->where('id', $request->especialidad)->first();
 
-        $title = $request->cita_hora.'- Cita de la Especialidad ' . $especialidad->descripcion;
+        $title = $horario['hora'].' - '. $especialidad->descripcion;
 
         if ($consulta != null) {
             if ($consulta->archivo_id == null) {
