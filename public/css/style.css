@@ -1,0 +1,55 @@
+.fondo{
+
+	background-image: url(../img/fondo-medico.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	text-align: center;
+}
+.ocul{
+	visibility: hidden;
+	position: absolute;
+}
+
+
+.footer{
+	position: flexd;
+	padding: 2%;
+
+	margin-top:-10px;
+	bottom: -2px;
+	width: 100%;
+	background-image: url(../img/city-silueta.png);
+	background-size: contain;
+	filter: 0.5;
+	color: #ffffff;
+}
+.container-calend{
+padding: 5% 10% 5% 10%;
+}
+#formulario_card{
+    border: none;
+    /* box-shadow: 2px 2px 15px 1px rgb(255, 255, 255); */
+    box-shadow: 2px 2px 15px 3px rgba(0, 0, 0, .5);
+}
+.base-form{
+
+    align-content: justify-all;
+    text-align: justify;
+    position: relative;
+    padding: 5% 25% 5% 25%;
+}
+.title{
+    text-align: center;
+    color: #ffffff;
+}
+
+
+#btnSave{
+    transition: .5s;
+}
+
+#btnSave:hover{
+    background-color: #37CEEC;
+    color: #ffffff;
+}
