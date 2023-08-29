@@ -24,10 +24,10 @@ class Especialidad extends Model
         return DB::table('v_especialidades_medicos_activas')->select('*')->get();
     }
     public static function disponibilidadhoras($especialidad_id,$hospital){
-        return DB::table('v_cita_diaria_hospital_especialidad')->select('*')
-        ->where('id',$especialidad_id)
-        ->where('hospital_id',$hospital)->first();
 
+        return DB::table('v_cita_diaria_hospital_especialidad')->select('*')
+        ->where('especialidad_id',$especialidad_id)
+        ->where('hospital_id',$hospital)->first();
 
     }
 }

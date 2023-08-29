@@ -63,6 +63,11 @@ class CitaController extends Controller
         try {
             $data_persona = Persona::guardarPC($request);
             $validarDisponibilidadEspecialidades = Especialidad::disponibilidadhoras($request->especialidad,$request->hospital);
+            if(!$validarDisponibilidadEspecialidades){
+                Alert::error('Hospital', 'El Hospital seleccionado no ha cargado el numero de citas disponibles diarias.');
+                DB::rollback();
+                return redirect()->back();
+            }
             $obtenerUltimaCitaEspecialidad = Cita::ultimacitaagendada($request->especialidad,$request->hospital,$validarDisponibilidadEspecialidades->citas_diarias);
 
             $cita = Cita::guardarCita($request,$data_persona->id,$obtenerUltimaCitaEspecialidad);

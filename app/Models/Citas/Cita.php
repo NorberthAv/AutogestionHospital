@@ -40,49 +40,61 @@ class Cita extends Model
         $ultimacitaagendada = Cita::select('id','start','hora')->where('especialidad_id',$especialidad)
         ->where('hospital_id',$hospital)
         ->orderBy('id','DESC')->first();
-        $getcitasEspecialidadDia = Cita::select('*')
-        ->where('especialidad_id',$especialidad)
-        ->where('hospital_id',$hospital)
-        ->where('start',$ultimacitaagendada->start)->get();
 
-        $cuentaCitasAgendadas = $getcitasEspecialidadDia->count();
-        $fecha = Carbon::createFromFormat('Y-m-d H:i:s', $ultimacitaagendada->start);
-        $fecha->addDay();
+        if($ultimacitaagendada != null){
+            $getcitasEspecialidadDia = Cita::select('*')
+            ->where('especialidad_id',$especialidad)
+            ->where('hospital_id',$hospital)
+            ->where('start',$ultimacitaagendada->start)->get();
 
-        if($cuentaCitasAgendadas < $citasDiarias){
-            $fechaagendada = Carbon::createFromFormat('Y-m-d H:i:s', $ultimacitaagendada->start);
-            $horasuma = Carbon::createFromFormat('h:i A', $ultimacitaagendada->hora);
-            $horasuma->addHours(1);
+            $cuentaCitasAgendadas = $getcitasEspecialidadDia->count();
+            $fecha = Carbon::createFromFormat('Y-m-d H:i:s', $ultimacitaagendada->start);
+            $fecha->addDay();
+            if($cuentaCitasAgendadas < $citasDiarias){
+                $fechaagendada = Carbon::createFromFormat('Y-m-d H:i:s', $ultimacitaagendada->start);
+                $horasuma = Carbon::createFromFormat('h:i A', $ultimacitaagendada->hora);
+                $horasuma->addHours(1);
 
-            if($fechaagendada->isBefore($nowValid) || $fechaagendada->isSameYear($nowValid) && $fechaagendada->isSameMonth($nowValid) && $fechaagendada->isSameDay($nowValid)){
-                $now->addDay();
-                $fechaCita =  Carbon::createFromFormat('Y-m-d H:i:s', $now)->format('Y-m-d H:i:s');
-                $hora  = '7:00 AM';
+                if($fechaagendada->isBefore($nowValid) || $fechaagendada->isSameYear($nowValid) && $fechaagendada->isSameMonth($nowValid) && $fechaagendada->isSameDay($nowValid)){
+                    $now->addDay();
+                    $fechaCita =  Carbon::createFromFormat('Y-m-d H:i:s', $now)->format('Y-m-d H:i:s');
+                    $hora  = '7:00 AM';
+                }else{
+                    $fechaCita =  $ultimacitaagendada->start;
+                    $hora = Carbon::createFromFormat('Y-m-d H:i:s', $horasuma)->format('h:i A');
+                }
+                    $resulta = [
+                            'fecha' => $fechaCita,
+                            'hora'  => $hora
+                        ];
             }else{
-                $fechaCita =  $ultimacitaagendada->start;
-                $hora = Carbon::createFromFormat('Y-m-d H:i:s', $horasuma)->format('h:i A');
-            }
-                $resulta = [
-                        'fecha' => $fechaCita,
-                        'hora'  => $hora
+                // 7:00 AM ----- Dia Siguiente
+
+                if($fecha->isBefore($nowValid)){
+                    $now->addDay();
+                    $newfecha =  Carbon::createFromFormat('Y-m-d H:i:s', $now)->format('Y-m-d H:i:s');
+                }else{
+                    $newfecha =  Carbon::createFromFormat('Y-m-d H:i:s', $fecha)->format('Y-m-d H:i:s');
+                }
+
+
+                 $resulta = [
+                    'fecha' => $newfecha,
+                    'hora'  => '7:00 AM'
                     ];
-        }else{
-            // 7:00 AM ----- Dia Siguiente
 
-            if($fecha->isBefore($nowValid)){
-                $now->addDay();
-                $newfecha =  Carbon::createFromFormat('Y-m-d H:i:s', $now)->format('Y-m-d H:i:s');
-            }else{
-                $newfecha =  Carbon::createFromFormat('Y-m-d H:i:s', $fecha)->format('Y-m-d H:i:s');
             }
-
-
-             $resulta = [
+        }else{
+            $now->addDay();
+            $newfecha =  Carbon::createFromFormat('Y-m-d H:i:s', $now)->format('Y-m-d H:i:s');
+            $resulta = [
                 'fecha' => $newfecha,
                 'hora'  => '7:00 AM'
                 ];
-
         }
+
+
+
 
         return $resulta;
     }
