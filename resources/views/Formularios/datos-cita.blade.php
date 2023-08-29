@@ -10,7 +10,7 @@
         <div class="col-6">
             <label for="especialidad"><b>Especialidad:</b></label>
             <br>
-            <select name="especialidad" id="especialidad" class="form-control" onchange="cargaCategoria();">
+            <select name="especialidad" id="especialidad" class="form-control" onchange="cargaCategoria(),cargaHospital()">
                 <option value="">Seleccione una Especialidad</option>
                 @foreach ($especialidades as $k => $v)
                 <option value="{{ $v->id }}">{{ strtoupper($v->descripcion) }}</option>
@@ -58,17 +58,17 @@
     $(document).ready(function() {
 
     });
-     function cargaHospital()
+    function cargaHospital()
     {
         var selectespecialidad      = $('#especialidad').val();
-        $('#categoria').empty();
+        $('#hospital').empty();
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
         $.ajax({
-            url: "{{route('cargaCategoria.list')}}",
+            url: "{{route('cargahospital.list')}}",
             dataType: 'json',
             type: 'post',
             data:{
@@ -79,14 +79,14 @@
                 if(data.length>0)
                 {
 
-                    $("#categoria").append('<option value="">Seleccione...</option>');
+                    $("#hospital").append('<option value="">Seleccione un Hospital</option>');
                     data.forEach(element => {
                         console.log(element);
-                        var categoria_id =element.id
-                        var categoria_descripcion = element.descripcion;
-                        $("#categoria").append('<option value='+categoria_id+'>'+categoria_descripcion+'</option>');
+                        var hospital_id =element.hospital_id
+                        var hospital_descripcion = element.hospital+' ( '+element.entidad+'-'+element.municipio+'-'+element.parroquia+' )';
+                        $("#hospital").append('<option value='+hospital_id+'>'+hospital_descripcion+'</option>');
                     });
-                    $('#categoria').removeAttr('disabled');
+                    $('#hospital').removeAttr('disabled');
                     //persona_id
                 }
 
@@ -118,7 +118,7 @@
                 if(data.length>0)
                 {
 
-                    $("#categoria").append('<option value="">Seleccione...</option>');
+                    $("#categoria").append('<option value="">Seleccione una Categoria</option>');
                     data.forEach(element => {
                         console.log(element);
                         var categoria_id =element.id

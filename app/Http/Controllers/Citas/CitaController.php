@@ -62,8 +62,8 @@ class CitaController extends Controller
         DB::beginTransaction();
         try {
             $data_persona = Persona::guardarPC($request);
-            $validarDisponibilidadEspecialidades = Especialidad::disponibilidadhoras($request->especialidad);
-            $obtenerUltimaCitaEspecialidad = Cita::ultimacitaagendada($request->especialidad,$validarDisponibilidadEspecialidades->citas_diarias);
+            $validarDisponibilidadEspecialidades = Especialidad::disponibilidadhoras($request->especialidad,$request->hospital);
+            $obtenerUltimaCitaEspecialidad = Cita::ultimacitaagendada($request->especialidad,$request->hospital,$validarDisponibilidadEspecialidades->citas_diarias);
 
             $cita = Cita::guardarCita($request,$data_persona->id,$obtenerUltimaCitaEspecialidad);
 

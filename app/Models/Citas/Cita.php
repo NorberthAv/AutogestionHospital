@@ -25,19 +25,24 @@ class Cita extends Model
         'title',
         'estatus',
         'user_id',
+        'hospital_id',
+
     ];
      /** scope filtro entidad */
     public static function obtenereventos(){
         return DB::table('v_cita')->select('*')->orderByRaw("to_timestamp(hora, 'HH12:MI AM')")->get();
     }
-    public static function ultimacitaagendada($especialidad,$citasDiarias){
+    public static function ultimacitaagendada($especialidad,$hospital,$citasDiarias){
         $now = Carbon::now();
         $nowValid = Carbon::now()->format('Y-m-d');
 
 
         $ultimacitaagendada = Cita::select('id','start','hora')->where('especialidad_id',$especialidad)
+        ->where('hospital_id',$hospital)
         ->orderBy('id','DESC')->first();
-        $getcitasEspecialidadDia = Cita::select('*')->where('especialidad_id',$especialidad)
+        $getcitasEspecialidadDia = Cita::select('*')
+        ->where('especialidad_id',$especialidad)
+        ->where('hospital_id',$hospital)
         ->where('start',$ultimacitaagendada->start)->get();
 
         $cuentaCitasAgendadas = $getcitasEspecialidadDia->count();
@@ -88,6 +93,7 @@ class Cita extends Model
         $consulta = Cita::select('*')
             ->where('paciente_id', $idpersona)
             ->where('especialidad_id', $request->especialidad)
+            ->where('hospital_id',$request->hospital)
             ->where('categoria_id', $request->categoria)->first();
 
         $especialidad = DB::table('especialidad')->select('*')->where('id', $request->especialidad)->first();
@@ -109,6 +115,7 @@ class Cita extends Model
                 'paciente_id' => $idpersona,
                 'especialidad_id' => $request->especialidad,
                 'categoria_id' => $request->categoria,
+                'hospital_id' => $request->hospital,
             ],
             [
                 'title' => $title,

@@ -23,7 +23,11 @@ class Especialidad extends Model
     public static function comboEspecialidadesActivasconMedicos(){
         return DB::table('v_especialidades_medicos_activas')->select('*')->get();
     }
-    public static function disponibilidadhoras($especialidad_id){
-        return Especialidad::select('*')->where('id',$especialidad_id)->first();
+    public static function disponibilidadhoras($especialidad_id,$hospital){
+        return DB::table('v_cita_diaria_hospital_especialidad')->select('*')
+        ->where('id',$especialidad_id)
+        ->where('hospital_id',$hospital)->first();
+
+
     }
 }

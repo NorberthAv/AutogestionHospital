@@ -27,8 +27,10 @@ class Hospital extends Model
         return Hospital::select('*')->get();
     }
     public static function Hospital_especialidad($especialidad_id){
+
         return DB::table('v_medico_especialidad')
-        ->where($especialidad_id)
+        ->select('*')
+        ->where('especialidad_id',$especialidad_id)
         ->where('medico_activo',true)
         ->where('estatus',true)->get();
     }
