@@ -26,6 +26,12 @@ class Hospital extends Model
     public static function comboHospitales(){
         return Hospital::select('*')->get();
     }
+    public static function consultarHospital($hospital_id){
+        return DB::table('v_hospital_locacion')
+        ->select('*')
+        ->where('id',$hospital_id)
+        ->where('estatus',true)->first();
+    }
     public static function Hospital_especialidad($especialidad_id){
 
         return DB::table('v_medico_especialidad')

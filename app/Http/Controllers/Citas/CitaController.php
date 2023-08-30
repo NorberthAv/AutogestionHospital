@@ -71,8 +71,12 @@ class CitaController extends Controller
             $obtenerUltimaCitaEspecialidad = Cita::ultimacitaagendada($request->especialidad,$request->hospital,$validarDisponibilidadEspecialidades->citas_diarias);
 
             $cita = Cita::guardarCita($request,$data_persona->id,$obtenerUltimaCitaEspecialidad);
-
-        $creacionCorreo = Correo::guardarCorreo($request,$cita->id);
+        $consultarHospital = Hospital::consultarHospital($request->hospital);
+        $hospital = 'Hospital';
+        if($consultarHospital){
+            $hospital = $consultarHospital->hospital.' ('.$consultarHospital->entidad.'-'.$consultarHospital->municipio.'-'.$consultarHospital->parroquia.' )';
+        }
+        $creacionCorreo = Correo::guardarCorreo($request,$cita->id,$consultarHospital,$obtenerUltimaCitaEspecialidad);
         $correoEnvio = CorreoEnvio::envioCorreo($creacionCorreo->id,$request->correo);
         $descripcion = 'Recipe de para cita de la especialidad';
 
@@ -110,6 +114,9 @@ class CitaController extends Controller
         $parametrosCorreo = [
             'archivo'            => $file_base64?? null,
             'recipe'             => $nombre??null,
+            'hospital'           => $hospital,
+            'telefono_hospital'  => $consultarHospital->telefono,
+            'correo_hospital'    => $consultarHospital->correo,
             'correo_paciente'    => $data_persona->correo,
             'cedula_paciente'    => $data_persona->cedula,
             'nombre_paciente'    => $data_persona->nombre,

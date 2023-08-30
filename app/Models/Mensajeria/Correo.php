@@ -20,25 +20,35 @@ class Correo extends Model
         'estatus',
         'user_id',
     ];
-public static function guardarCorreo($request,$cita_id){
+public static function guardarCorreo($request,$cita_id,$consultarHospital = null,$horario = null){
 
     $consulta = DB::table('v_cita')->select('*')->where('id',$cita_id)->first();
 
     $fecha = Carbon::parse($request->start)->format('d/m/Y');
-
+    $hospital = 'Hospital';
     $asunto ='Cita: '.$consulta->title.' del Paciente '.$request->nombre.' '.$request->apellido.' Titular de la cedula: '.$request->cedula;
+    if($consultarHospital != null){
+        $hospital = $consultarHospital->hospital.' ('.$consultarHospital->entidad.'-'.$consultarHospital->municipio.'-'.$consultarHospital->parroquia.' )';
+    }
 
-    $descripcion = '<p>Cita de la Especialidad:&nbsp;'.$consulta->especialidad.
-    '.<br> De la Categoria:&nbsp;'.$consulta->categoria.'.<br>Con el Paciente:&nbsp;'.
+    $descripcion = '<p style="text-align: center;">
+    <b>'.$hospital.'</b><br>
+    <b>Contacto del Hospital</b><br>
+    <b>Correo del Hospital:</b>&nbsp;'.$consultarHospital->correo.'.<br>
+    <b>Telefono del hospital:</b>&nbsp;'. $consultarHospital->telefono.'.
+    </p>
+    <p><b>Cita de la Especialidad:</b>&nbsp;'.$consulta->especialidad.
+    '.<br><b>De la Categoria:</b>&nbsp;'.$consulta->categoria.'.<br>Con el Paciente:&nbsp;'.
     $request->nombre.'&nbsp;'.$request->apellido.'.<br>Titular de la cedula:&nbsp;'.$request->cedula.
-    '.<br>Con los datos de contacto:</p>
+    '.</p>
     <p>
-     Telefono:'.$request->telefono.'<br>
-     Correo:'.$request->correo.
+    <br><b>Datos de contacto del paciente</b><br>
+    <b>Telefono:</b>&nbsp;'.$request->telefono.'<br>
+    <b>Correo:</b>&nbsp;'.$request->correo.
      '</p>
      <p>
-     Cita Asignada para el Dia:&nbsp;'.$fecha. '&nbsp;En el Horario:&nbsp;'.$request->cita_hora.
-     '.</p>';
+     Cita Asignada para el Dia:&nbsp;<b>'.$fecha. '</b>&nbsp;En el Horario:&nbsp;<b>'.$horario['hora'].
+     '</b>.</p>';
 
 
 

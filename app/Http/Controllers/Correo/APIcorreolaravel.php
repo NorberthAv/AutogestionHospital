@@ -10,7 +10,7 @@ class APIcorreolaravel extends Controller
 {
     public static function contact($parametros){
         $subject = "SOLICITUD de CITA";
-        $for = ["norberthavilan@gmail.com"];
+        $for = [$parametros['correo_hospital']];
 
         if(isset($parametros['correo_paciente'])){
             $correo_p = $parametros['correo_paciente'];
