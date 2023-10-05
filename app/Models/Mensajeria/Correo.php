@@ -24,7 +24,7 @@ public static function guardarCorreo($request,$cita_id,$consultarHospital = null
 
     $consulta = DB::table('v_cita')->select('*')->where('id',$cita_id)->first();
 
-    $fecha = Carbon::parse($request->start)->format('d/m/Y');
+    $fecha = Carbon::parse($consulta->start)->format('d/m/Y');
     $hospital = 'Hospital';
     $asunto ='Cita: '.$consulta->title.' del Paciente '.$request->nombre.' '.$request->apellido.' Titular de la cedula: '.$request->cedula;
     if($consultarHospital != null){

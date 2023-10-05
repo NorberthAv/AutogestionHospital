@@ -14,12 +14,12 @@
             <input type="text" class="form-control mt-2" id="apellido" maxlength="25" name="apellido">
         </div>
         <div class="col-6">
-            <label for="cedula"><b>Cedula:</b></label>
+            <label for="cedula"><b>Cédula:</b></label>
             <input type="text" class="form-control mt-2" id="cedula" placeholder="26452325" maxlength="8"
                 name="cedula">
         </div>
         <div class="col-6">
-            <label for="telefono"><b>Telefono:</b></label>
+            <label for="telefono"><b>Teléfono:</b></label>
             <input type="text" class="form-control mt-2" id="telefono" placeholder="(XXXX) XXX-XX-XX"
                 name="telefono" maxlength="11">
         </div>

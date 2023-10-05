@@ -38,7 +38,7 @@ class Hospital extends Model
         ->select('*')
         ->where('especialidad_id',$especialidad_id)
         ->where('medico_activo',true)
-        ->where('estatus',true)->get();
+        ->where('estatus_hospital',true)->get();
     }
 
 }

@@ -24,6 +24,7 @@ class Cita extends Model
         'archivo_id',
         'title',
         'estatus',
+        'estatus_cita',
         'user_id',
         'hospital_id',
 
@@ -135,6 +136,7 @@ class Cita extends Model
                 'end' => $horario['fecha'],
                 'hora' => $horario['hora'],
                 'archivo_id' => $archivoPrevio,
+                'estatus_cita' => 1,
             ]
         );
     }

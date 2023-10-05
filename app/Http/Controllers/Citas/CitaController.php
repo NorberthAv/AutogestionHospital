@@ -133,7 +133,7 @@ class CitaController extends Controller
         return redirect()->back();
 
         } catch (\Illuminate\Database\QueryException $e) {
-
+dd($e);
         DB::rollback();
         return redirect()->back();
         }

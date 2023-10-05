@@ -10,19 +10,20 @@
         <div class="col-6">
             <label for="especialidad"><b>Especialidad:</b></label>
             <br>
-            <select name="especialidad" id="especialidad" class="form-control" onchange="cargaCategoria(),cargaHospital()">
+            {{-- @dd($especialidades) --}}
+            <select name="especialidad" id="especialidad" class="form-control" onchange="activacion();">
                 <option value="">Seleccione una Especialidad</option>
                 @foreach ($especialidades as $k => $v)
-                <option value="{{ $v->id }}">{{ strtoupper($v->descripcion) }}</option>
+                <option value="{{ $v->especialidad_id }}">{{ mb_strtoupper($v->descripcion) }}</option>
                 @endforeach
 
             </select>
         </div>
         <div class="col-6">
-            <label for="categoria"><b>Categoria:</b></label>
+            <label for="categoria"><b>Categoría:</b></label>
             <br>
             <select name="categoria" disabled id="categoria" class="form-control">
-                <option value="">Seleccione una Categoria</option>
+                <option value="">Seleccione una Categoría</option>
 
             </select>
         </div>
@@ -97,8 +98,13 @@
             }
         });
     }
+    async function activacion(){
+        await cargaCategoria();
+        await cargaHospital();
+    }
     function cargaCategoria()
     {
+
         var selectespecialidad      = $('#especialidad').val();
         $('#categoria').empty();
         $.ajaxSetup({
